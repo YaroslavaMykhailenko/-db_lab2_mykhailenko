@@ -5,11 +5,12 @@ GROUP BY order_date
 
 Запит 6b:(кругова діаграма)
 
-SELECT TRIM(kitchen_type), COUNT(*) AS count_cuisine FROM restaurants
-group by kitchen_type
+SELECT TRIM(restaurants.rest_name), COUNT(rest_id) 
+FROM restaurants JOIN orders USING(rest_id)
+GROUP BY rest_id
 
 Запит 6c:(графік залежності)
 
-SELECT COUNT(prod_price) AS quantity_products, products.prod_price
-FROM products JOIN orders USING(prod_id)  GROUP BY prod_price
-ORDER BY prod_price
+SELECT prod_price, sum(quantity) AS quantity_products
+FROM products JOIN orderitems USING(prod_id)
+GROUP BY prod_price ORDER BY prod_price
