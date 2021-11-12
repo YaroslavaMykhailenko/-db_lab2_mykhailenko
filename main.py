@@ -9,17 +9,15 @@ host = 'localhost'
 port = '5432'
 
 query_1 = '''
-
-select order_date, count(*) as quantity_orders from orders group by order_date
+SELECT order_date, COUNT(*) AS quantity_orders FROM orders GROUP BY order_date
 '''
 query_2 = '''
-select TRIM(kitchen_type), count(*) as count_cuisine from restaurants group by kitchen_type
+SELECT TRIM(restaurants.rest_name), COUNT(rest_id) FROM restaurants JOIN orders USING(rest_id) GROUP BY rest_id 
 '''
 query_3 = '''
-SELECT COUNT(prod_price) AS quantity_products, products.prod_price
-FROM products JOIN orders USING(prod_id)  GROUP BY prod_price
-ORDER BY prod_price
-
+SELECT prod_price, sum(quantity) AS quantity_products
+FROM products JOIN orderitems USING(prod_id)
+GROUP BY prod_price ORDER BY prod_price
 '''
 
 con = psycopg2.connect(user=username, password=password, dbname=database, host=host, port=port)
